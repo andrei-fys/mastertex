@@ -3143,10 +3143,7 @@ The brute force solvers written in Python and C++ are slow. They were used to co
 
 CCD approximation for the electron gas has been extensively studied by many researchers. An obvious way to validate our results is to compare CCD correlation energy with energies of other codes. We compared our energies to the results of Hansen\cite{HansenCoupledclusterstudies},  Baardsen \cite{BaardsenCoupledclustertheoryinfinite2014} and recent studies of Miller\cite{MillerQuantumMechanicalStudies2017}. Our code produced results which corroborate the findings of a great deal of the previous work, as can be seen in table \ref{tab:CCDcompar}.
 
-
-
-
-However comparison of results with precision beyond 6 digits might be useful only for specific debug purposes. We used $10^{-6}$ tolerance for the iterative process. Besides, precision of different constants \footnote{We refer here to the Planck constant, the speed of light, the fine-structure constant etc. which are used in \classname{setUpUnits} function fo the electron gas.} used to set up units correctly is usually determined to about the 5-8th decimal. Additionally taking into account round-off errors or minor differences in the implementation, we think that agreement in results of other codes up to the $10^{-6}$ due to precision -- eto fakt, po kotoromy my schitaem rezultaty correktnymi.
+However comparison of the results with the precision beyond 6 digits might be useful only for specific debug purposes. We used $10^{-6}$ tolerance for the iterative process. Besides, precision of different constants \footnote{We refer here to the Planck constant, the speed of light, the fine-structure constant etc. which are used in \classname{setUpUnits} function fo the electron gas.} used to set up units correctly is usually determined to about the 5-8th decimal. Additionally taking into account round-off errors and minor differences in the implementation, we find the agreement in results up to the $10^{-6}$ to be adequate.
 It is apparent from this table that the results are consistent within mentioned numerical precision.
 
 \begin{landscape}
@@ -3274,21 +3271,22 @@ The most difficult parts of the CCQMC algorithm are the variation of the populat
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Nex2000new}
-	\caption{14 electrons rs 0.5 without tunning S etc tau 0.0005 2000 iter }
+	\caption{The population dynamics of the excited space for 14 electrons and 54 basis functions. $r_s=0.5$, $\delta \tau=0.0005$.}
 	\label{fig:nx2k}
 \end{figure}
+
 We tested same code for 162 basis state functions and observed same pattern, but with number of excips grown closer to $10^4$. These results would seem to suggest that the sign structure of the wave-function is correct.
 However, these results should be treated cautiously since population on the reference was fixed in the beginning of the simulation. Additionally it can be seen from figure \ref{fig:platFind} that after 1600 iteration (that corresponds to the value of $\tau=0.6$ on figure \ref{fig:nx2k}) number of death and spawn events fluctuates around some value. That can mean that spawn and death probably give equal amount of positive and negative excips.
-
-	
-	
+Tuning of the energy shift parameter $S$ might be considered as a qualitative measure of plateau.
+We found that attempts to vary $S$ before plateau resulted into extinction of the population of the excited space. In contrast adjusting of the shift after plateau caused stable population(see figures \ref{fig:platFindStune} anf \ref{fig:nx20k}).
+However these results must be interpreted with caution because of the imbalance between the population of the excited space and the population of the reference. The last might be the possible explanation for the absence of the expected after plateau exponential growth of the total population.	
 
 
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Nex20000}
-	\caption{14 electrons rs 0.5 with tunning S etc tau 0.0005 20000 iters}
+	\caption{The population dynamics of the excited space for 14 electrons and 54 basis functions with $r_s=0.5$, $\delta \tau=0.0005$ and the population control enabled after $5\cdot 10^3$ iterations. Dampening parameter is $\gamma = 0.05$. The energy shift $S$ is tuned every five iterations.}
 	\label{fig:nx20k}
 \end{figure}
 
@@ -3296,7 +3294,7 @@ However, these results should be treated cautiously since population on the refe
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{CCDvsCCDT}
-	\caption{14 electrons diff rs vs hansen}
+	\caption{The correlation energy for 14 particles and 54 single-particle states for different densities of the electron gas. CCDT results were taken from \cite{HansenCoupledclusterstudies}.}
 	\label{fig:CCDvsCCDT}
 \end{figure}
 
@@ -3307,7 +3305,7 @@ However, these results should be treated cautiously since population on the refe
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{platFind}
-	\caption{14 electrons rs 0.5 without tunning S etc }
+	\caption{The population dynamics of the excited space for 14 electrons and 54 basis functions. $r_s=0.5$, $\delta \tau=0.0005$.}
 	\label{fig:platFind}
 \end{figure}
 
@@ -3318,7 +3316,7 @@ However, these results should be treated cautiously since population on the refe
 	\begin{figure}[ht!]
 		\centering
 		\includegraphics[width=0.8\linewidth]{platFindStune}
-		\caption{14 electrons rs 0.5 with tunning S etc }
+		\caption{The population dynamics of the excited space for 14 electrons and 54 basis functions with $r_s=0.5$, $\delta \tau=0.0005$ and the population control enabled after $5\cdot 10^3$ iterations. Dampening parameter is $\gamma = 0.05$. The energy shift $S$ is tuned every five iterations.}
 		\label{fig:platFindStune}
 	\end{figure}
 	
