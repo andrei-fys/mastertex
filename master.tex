@@ -96,7 +96,7 @@
 %\bibliography{references}
 
 \author{Andrei Kukharenka}
-\title{Stochastic Optimisation for Mady-Body Problem}
+\title{Stochastic Optimization for Mady-Body Problem}
 \date{August 2018}
 
 \begin{document}
@@ -109,7 +109,19 @@
 	
 	
 	\begin{acknowledgements}
-		I acknowledge ...
+		Now, when this Master thesis is finished and I am standing on the cusp of the turning point of my life, I would like to express sincere gratitude to every person that has contributed to this work and supported me during such challenging and important time period.
+		
+		I am immensely grateful to my supervisor, Professor Morten Hjorth-Jensen -- the one who has always lent both scientific and moral support. At the most hard moments Professor helped to regain confidence and encouraged to assign difficult outstanding objectives. Working under supervision of Professor Morten Hjorth-Jensen inspired me to strive for perfection regardless of how challenging my tasks were.
+		
+		I would like to thank Professor Anders Malthe-S\o renssen and Grete Stavik-D\o vle for their help and assistance with necessary arrangements at the start of my full-time study as a master student.
+		
+		I am also very thankful to H\aa kon, Morten and \O yvind , Sebastian and Mathias for our conversations on physics, in particular, discussions about coupled cluster theory, which gave rise to many ideas, as well as for fun time that was of great importance during this hard work. As my teaching assistants on courses of computational physics, H\aa kon and Morten showed high professionalism and made great contribution to the achieved results.
+		
+		I am deeply grateful to Alocias for his significant helping hand in coding process. I should also thank H\aa kon and Julia Vinnik for time and efforts they spent on proofread of my Slavic English. Thanks to my Italian friends Giovanni and Alessio for constant support and inspiration.
+		
+		I'm grateful to Anna for endless discussion about physics and statistics. Your fantastic ability to spot errors in code saved me a lot of time during last year.
+		
+		Finally, thanks to every person accompanied me on this challenging path.
 	\end{acknowledgements}
 	
 	\tableofcontents
@@ -414,7 +426,7 @@ By projecting equation (\ref{unlinkedCCenergy}) onto excited determinants(produc
 \bra{\Phi_{ij\dots}^{ab\dots}}\hat{H}e^{\hat{T}}\ket{\Phi} = E\bra{\Phi_{ij\dots}^{ab\dots}}e^{\hat{T}}\ket{\Phi}.
 \end{equation}
 
-Projection on the determinant ${\Phi_{ij}^{ab}}$ will produce an equation for the specific amplitude ${t_{ij}^{ab}}$ coupled to the other amplitudes. The number of equations will match the number of possible determinants we can generate by excitation of the reference. Equation (\ref{unlinkedCCamplts}) is referred to as the $unlinked\ coupled{\text -}cluster\ amplitude\ equations$. Although, these equations are exact if there is no truncation in the operator $\hat{T}$, they are too complicated to work with since they are non-linear($e^{\hat{T}}$) and energy dependent.
+Projection on the determinant ${\Phi_{ij}^{ab}}$ will produce an equation for the specific amplitude ${t_{ij}^{ab}}$ coupled to the other amplitudes. The number of equations will match the number of possible determinants we can generate by excitation of the reference. Equation (\ref{unlinkedCCamplts}) is referred to as the $unlinked\ coupled{\text -}cluster\ amplitude\\ equations$. Although, these equations are exact if there is no truncation in the operator $\hat{T}$, they are too complicated to work with since they are non-linear($e^{\hat{T}}$) and energy dependent.
 
 Large simplifications of the amplitude equations can be achieved by using the  similarity-transformed Hamiltonian: 
 \[
@@ -589,8 +601,7 @@ Recipe to obtain linked coupled cluster amplitude equations is the same as descr
 For example the term $\langle \Phi_{ij}^{ab}|\hat{H}_{N}|\Phi_0\rangle$:
 \begin{align}
 \begin{split}
-\langle\Phi_{ij}^{ab}|(\hat{V}_{N})|\Phi_0\rangle,\nonumber \\
-\braket{\Phi_{ij}^{ab}|(\hat{V}_{N})|\Phi_0} = \frac{1}{4}\sum_{pqrs} \braket{pq||rs}\langle \Phi_0| \{  c_i^\dagger c_j^\dagger  c_b  c_a \} \{  c_p^\dagger c_q^\dagger  c_s  c_r \} |\Phi_0\rangle=\nonumber \\
+\langle\Phi_{ij}^{ab}|(\hat{V}_{N})|\Phi_0\rangle = \frac{1}{4}\sum_{pqrs} \braket{pq||rs}\langle \Phi_0| \{  c_i^\dagger c_j^\dagger  c_b  c_a \} \{  c_p^\dagger c_q^\dagger  c_s  c_r \} |\Phi_0\rangle=\nonumber \\
 \frac{1}{4}\sum_{pqrs} \braket{pq||rs} \bigg( \wick{ \{ \c4 c_i^\dagger \c3 c_j^\dagger \c2 c_b \c1 c_a \c1  c_p^\dagger \c2 c_q^\dagger \c3 c_s \c4 c_r \}  }
 +
  \wick{ \{ \c4 c_i^\dagger \c3 c_j^\dagger \c2 c_b \c1 c_a \c2  c_p^\dagger \c1 c_q^\dagger \c3 c_s \c4 c_r \}  
@@ -2344,7 +2355,7 @@ The elements of matrices $\tilde{W}$ and $\tilde{T}$ must satisfy the same restr
 j - b = k - c = a - i = k - c,
 \end{equation}
 which is nothing else but relation (\ref{restrict}), written out according to the reordering scheme introduced in (\ref{decoupling}).
-From the discussion above it follows that to calculate $L_3$ diagram as matrix product we need to construct interaction matrix block following restriction (\ref{restrict1}). This means that this matrix must be constructed from the vector containing the following two-body states: hole sp-state minus particle sp-state. This explains now the existence of lines (27-28) in listing (\ref{CCSetUpChannels}). We refer to the described procedure as $decoupling$. Some texts(links to Shean and Hansen) introduce term $alignment$ for this.
+From the discussion above it follows that to calculate $L_3$ diagram as matrix product we need to construct interaction matrix block following restriction (\ref{restrict1}). This means that this matrix must be constructed from the vector containing the following two-body states: hole sp-state minus particle sp-state. This explains now the existence of lines (27-28) in listing (\ref{CCSetUpChannels}). We refer to the described procedure as $decoupling$. Some texts\cite{HansenCoupledclusterstudies} \cite{MillerQuantumMechanicalStudies2017} introduce term $alignment$ for this.
 Finally we should mention that $\tilde{L}_3$ must be recoupled again to match the indexing scheme of amplitudes.
 
 I the considered example pairs of states represent rows and columns. However $Q_3$ and $Q_4$ diagrams is impossible to decouple according to the similar scheme. To perform the calculation of these diagrams as matrix product, decoupling must be applied according the following scheme: the columns represent three states, and the rows represent one state. In table \ref{tab:recoupling} all decouplings are represented for the CCD block solver.
@@ -3320,6 +3331,14 @@ However these results must be interpreted with caution because of the imbalance 
 
 
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{deathN0}
+	\caption{The population dynamics for 14 electrons and 54 basis functions with $r_s=0.5$, $\delta \tau=0.0001$ and the population control enabled after $5\cdot 10^3$ iterations. Dampening parameter is $\gamma = 0.05$. The energy shift $S$ is tuned every five iterations.}
+	\label{fig:deathN0}
+\end{figure}
+
+
 
 
 
@@ -3350,7 +3369,7 @@ At the moment of writing this thesis the only available results published were l
 
 \begin{appendices}
 	
-\section{Second quantization}
+\section{Second quantization}\label{ManybodyBasics}
 Creation operator is defined as follows:
 \begin{equation}
 c_p^\dagger\ket{\phi_q  \dots \phi_s}=\ket{\phi_p \phi_q  \dots \phi_s}.    
