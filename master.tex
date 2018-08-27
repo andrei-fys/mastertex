@@ -1772,14 +1772,14 @@ Alternative idea for the population control is to make walker weight proportiona
 
 \section{Initiator approximation}
 
-Section will be filled with theory if initiator approximation is implemented in code.
+Initiator approximation is an improvement of CCQMC algorithm, originally developed for the resemblant FCIQMC algorithm\footnote{Sometimes it is also called $i$-FCIQMC}. The basic idea is to introduce additional restrictions on spawning, specifically the prohibition on the spawning from unpopulated determinants. Given some predefined threshold $n_{add}$, determinants with the population lower than this value cannot spawn new excips. This changes standard popylation dynamics by removing the annihilation plateau\cite{SpencerDevelopmentsstochasticcoupled2016}.  
 
 \chapter{The Infinite Electron Gas}
 
 Our system of interest is the interacting $homogeneous\ electron\ gas$(HEG), sometimes called $free\ electron\ gas$. 
 
 In practice this model can be useful when we consider metals. If electrons bounded to the ions at the lattice sites form close shells, the rest of the electrons can freely move through the volume. The model is expected to be a very good approximation to the valence electrons in alkali metals, where these electrons are bounded weekly to the ionic cores\cite{GrossManyparticletheory1991}.
-Furthermore in condensed matter physics, electron gas serves a similar function as infinite nuclear matter in nuclear physics\cite{Hjorth-Jensenadvancedcoursecomputational2017}. It worse mentioning that three-dimensional electron gas is particularly important in density-functional theory as its basic functional, the local-density functional, is based on results for the uniform electron gas \cite{ShollDensityFunctionalTheory2009}.
+Furthermore in condensed matter physics, electron gas serves a similar function as infinite nuclear matter in nuclear physics\cite{Hjorth-Jensenadvancedcoursecomputational2017}. It worse mentioning that three-dimensional electron gas is particularly important in density-functional theory as its basic functional, the local-density functional, is based on results for the uniform electron gas \cite{ShollDensityFunctionalTheory2009}. This significant improvement, however, comes with a price of biased sampling.
 
 
 The electron gas is a typical example of a transitionally-invariant system. The fact that the self-consistent problem of the mean-field approximation is solved for transitionally invariant systems makes the electron gas an obvious system of choice for study of new many-body methods. That is why the electron gas is also called a $test\ bed$ for electron-electron correlations study. 
