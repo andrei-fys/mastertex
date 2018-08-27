@@ -22,6 +22,9 @@
 \usepackage{tikz}
 \include {ccdiag}
 
+\usetikzlibrary{calc,matrix}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usetikzlibrary{shapes,arrows}	
 \usetikzlibrary{arrows,decorations.markings}
@@ -88,7 +91,6 @@
 \newcommand*{\hatU}{\hat{\mathcal{U}}}
 \newcommand*{\hatV}{\hat{\mathcal{V}}}
 \newcommand*{\hatA}{\hat{\mathcal{A}}}
-
 
 
 %\bibliography{references}
@@ -1478,7 +1480,7 @@ Typically one $\delta\tau$ iteration of the FCIQMC algorithm has the following s
 	\item Annihilation. The signed population of the walkers is merged with the population from the previous $\tau$-iteration, so that the walkers of different signs cancel each other.
 \end{itemize}
 \section{The Population Monte Carlo Algorithm}
-Population Monte Carlo(PopMC) algorithms are a family of algorithms used in various scientific fields. The main idea is to represent a high-dimensional vector with an ensemble of virtual fictitious particles or walkers. The simulation is carried out by random walk in the state space associated by cloning and death events. It is worth mentioning that the PopMC is not a canonical Monte Carlo Markov Chain because the transition probabilities are generally not normalized. As we will see below the propagator in the PMC method is not normalized, and hence we need some weighting function to factor the propagator into a normalized probability.
+Population Monte Carlo(PopMC) algorithms are a family of algorithms used in various scientific fields. The main idea is to represent a high-dimensional vector with an ensemble of virtual fictitious particles or walkers. The simulation is carried out by random walk in the state space associated by cloning and death events. It is worse mentioning that the PopMC is not a canonical Monte Carlo Markov Chain because the transition probabilities are generally not normalized. As we will see below the propagator in the PMC method is not normalized, and hence we need some weighting function to factor the propagator into a normalized probability.
 We consider algorithm for the computation of the product of non-negative matrices $G^1, G^2, \dots$ and a non-negative vector $X^{(0)}$. On the $n$-th step vector becomes:
 \begin{equation}
 X^{(n)}(i) = \sum_{j} G^n(i,j)X^{(n)}(j)
@@ -1984,7 +1986,7 @@ As explained earlier the most straight-forward way to solve the CC equation is t
 
 \begin{align}
 \begin{split}
-0 = w_{ab}^{ij} + \hat{P}(ab)\sum_{c}f_{bc}t_{ij}^{ac} - \hat{P}(ij)\sum_{k}f_{kj} t_{kj}^{ab} + \frac{1}{2}\sum_{ab}w_{cd}^{ab}t_{ij}^{cd(n)} + \frac{1}{2}\sum_{kl}w_{ij}^{kl}t_{kl}^{ab(n)}\\ + \hat{P}(ij|ab)\sum_{kc}w_{cj}^{kb}t_{ik}^{ac(n)})
+0 = w_{ab}^{ij} + \hat{P}(ab)\sum_{c}f_{bc}t_{ij}^{ac} - \hat{P}(ij)\sum_{k}f_{kj} t_{kj}^{ab} + \frac{1}{2}\sum_{cd}w_{cd}^{ab}t_{ij}^{cd(n)} + \frac{1}{2}\sum_{kl}w_{ij}^{kl}t_{kl}^{ab(n)}\\ + \hat{P}(ij|ab)\sum_{kc}w_{cj}^{kb}t_{ik}^{ac(n)}
 + \frac{1}{4}\sum_{klcd}w_{cd}^{kl}t_{ij}^{cd(n)}t_{kl}^{ab(n)} + \hat{P}(ij)\sum_{klcd}w_{cd}^{kl}t_{ik}^{ac(n)}t_{jl}^{bd(n)}\\ - \frac{1}{2}\hat{P}(ij)\sum_{klcd}w_{cd}^{kl}t_{ik}^{dc(n)}t_{lj}^{ab(n)} - \frac{1}{2}\hat{P}(ab)\sum_{klcd}w_{cd}^{kl}t_{lk}^{ac(n)}t_{ij}^{db(n)}.
 \end{split}
 \end{align}
@@ -1993,7 +1995,7 @@ In the canonical Hartree-Fock basis the one-body operator contains diagonal elem
 
 \begin{align}\label{ccdls}
 \begin{split}
-	t_{ij}^{ab(n+1)} = \frac{1}{\epsilon_{ij}^{ab}}(w_{ab}^{ij} + \frac{1}{2}\sum_{ab}w_{cd}^{ab}t_{ij}^{cd(n)} + \frac{1}{2}\sum_{kl}w_{ij}^{kl}t_{kl}^{ab(n)} + \hat{P}(ij|ab)\sum_{kc}w_{cj}^{kb}t_{ik}^{ac(n)})\\
+	t_{ij}^{ab(n+1)} = \frac{1}{\epsilon_{ij}^{ab}}(w_{ab}^{ij} + \frac{1}{2}\sum_{cd}w_{cd}^{ab}t_{ij}^{cd(n)} + \frac{1}{2}\sum_{kl}w_{ij}^{kl}t_{kl}^{ab(n)} + \hat{P}(ij|ab)\sum_{kc}w_{cj}^{kb}t_{ik}^{ac(n)}\\
 	+ \frac{1}{4}\sum_{klcd}w_{cd}^{kl}t_{ij}^{cd(n)}t_{kl}^{ab(n)} + \hat{P}(ij)\sum_{klcd}w_{cd}^{kl}t_{ik}^{ac(n)}t_{jl}^{bd(n)} - \frac{1}{2}\hat{P}(ij)\sum_{klcd}w_{cd}^{kl}t_{ik}^{dc(n)}t_{lj}^{ab(n)}\\ - \frac{1}{2}\hat{P}(ab)\sum_{klcd}w_{cd}^{kl}t_{lk}^{ac(n)}t_{ij}^{db(n)}),
 \end{split}
 \end{align}
@@ -2358,7 +2360,7 @@ I the considered example pairs of states represent rows and columns. However $Q_
 			\hline
 			Name & Expression & Factor & Permutation & Decoupling & Re-coupling  \\
 			\hline\\
-			$  L_1 	  $  & $\sum\limits_{ab}w_{cd}^{ab}t_{ij}^{cd} $ & $  \frac{1}{2}$ &$  - $  & $w_{cd}^{ab}t_{ij}^{cd}  $ & $  -$  \\
+			$  L_1 	  $  & $\sum\limits_{cd}w_{cd}^{ab}t_{ij}^{cd} $ & $  \frac{1}{2}$ &$  - $  & $w_{cd}^{ab}t_{ij}^{cd}  $ & $  -$  \\
 			$  L_2    $  & $\sum\limits_{kl}w_{ij}^{kl}t_{kl}^{ab} $ & $  \frac{1}{2}$ &$  -  $  & $t_{kl}^{ab}w_{ij}^{kl}  $ & $  -$  \\
 			$  L_3    $  & $\sum\limits_{kc}w_{cj}^{kb}t_{ik}^{ac} $ & $ 1 $ &$ \hat{P}(ij|ab)   $  & $ w_{ck}^{jb}t_{ai}^{ck} $ & $ L_{3\ ai}^{\prime\ jb} \rightarrow t_{ij}^{ab}$  \\
 			$  Q_1    $  & $\sum\limits_{klcd}w_{cd}^{kl}t_{ij}^{cd}t_{kl}^{ab}  $ & $  \frac{1}{4}$ &$  -  $  & $t_{ij}^{cd}w_{cd}^{kl}t_{kl}^{ab} $ & $  -$  \\
@@ -2455,7 +2457,7 @@ We outline the structure of the program used for the calculations of the CCD equ
 	
 	
 \subsection{Single-particle basis class}
-	This is the base class containing pure virtual functions. Object of \classname{generalSPclass} is given as input for all solver classes to provide them with information about quantum system of interest. The two-body matrix elements og the Hamiltonian, single-particle energies, number of states and Fermi level are the typical quantities needed for almost every solver. %So this class contains prototypes for all the methods, that calculate....	
+	This is the base class containing pure virtual functions. Object of \classname{generalSPclass} is given as input for all solver classes to provide them with information about quantum system of interest. The two-body matrix elements of the Hamiltonian, single-particle energies, number of states and Fermi level are the typical quantities needed for almost every solver. %So this class contains prototypes for all the methods, that calculate....	
 \subsection{The electron gas single-particle basis class}
 	This class is derived class where the implementation of methods, described in \classname{generalSPclass},
 	must be placed. As it follows from the name of this class it provides typical quantities of interest for the electron gas. The number of shells and electrons together with Wigner-Seitz radius are needed for the constructor, which calls two methods: \classname{setUpUnits} and \classname{setUpStatesCartesian}. That creates a vector of objects \classname{CartesianState}, where each object represents a single-particle state as a set of quantum numbers(see table \ref{tab:spnumbers}).
@@ -2486,7 +2488,7 @@ Implementation of the setup of the symmetry channels for the electron gas is loc
 
 
 
-\subsection{Channel class}
+\subsection{Channel class}\label{channelsection}
 Instances of this class act as an organized storage for single-particle states\footnote{strictly speaking, we store indices of single-particle states in \classname{m_shells} vector.}. 
 Objects of this class contain a set of vectors. Each vector corresponds to the particular interaction, which must obey symmetry constrains. These vectors are:
 \begin{itemize}
@@ -2507,12 +2509,12 @@ i + j = a + b,
 \end{equation} 										
 for both the momentum and the spin. We store all hole-state indices $i$ and $j$ as a pair for a given channel in \classname{m_HoleHoleVec}. Similarly we do with particle-state indices $a$ and $b$ and vector \classname{m_ParticleParticleVec}. We must apology here for a not a completely strict name of class  \classname{channelindexpair}, as it can hold one or even three indices, which are needed for the diagrams $Q_3$ and $Q_4$.
 
-\subsection{Symmetry block class}
+\subsection{Symmetry block class}\label{symblocksection}
 This class is used for the interaction matrices. The main purpose is to structure interactions for each channel into a matrix. It also serves the purpose of the creation of the index vectors, where we store one-to-one correspondence between the interaction matrix element and single-particle state number.
 Vectors with symmetry block objects are created inside \classname{ccd} solver class.
 Since coupled cluster amplitudes are stored on the same form, this class is used to create amplitudes matrices with mapping as well.
 
-\subsection{CCD solver class}
+\subsection{CCD solver class}\label{ccdsolversec}
 
 the main method of the \classname{ccd} class is \classname{iterateCCD}. Here one can find the main component of the CCD solver, which is iterative procedure, shown in listing \ref{CCIteration}.
 To start iterations we initialize interaction matrix blocks and amplitude matrices. It is done by the following functions:
@@ -2554,6 +2556,78 @@ Inside the CCD iteration amplitudes are calculated and updated by the following 
 \classname{mbpt2channels} class serves as input for the CCD solver. It is a small class with two major methods: \classname{setUpChannels} and \classname{calculateEnergyMatMult}. Reasons for having a separate function to setup symmetry channels in side this class were presented in section \ref{blocksolvwf}.
 
 \section{Possible optimization}
+
+\subsubsection{Intermediates}
+
+So-called $intermediates$ provides us with a way of achieving reduction of execution time of our CCD code.
+According to \cite{MillerQuantumMechanicalStudies2017} speed up gained by using them can reach values up to 25\% which is a significant improvement. What is even more important is the usage of the intermediates for higher truncation levels.
+The basic idea is to find common quantities for different diagrams calculated repeatedly during one iteration. It seems to be logical to calculate these quantities only once in the beginning of each iteration and reuse them later for a diagram. As an example, we consider the last diagram of equation (\ref{ccdls}):
+\begin{equation}
+	Q_4 = -\frac{1}{2}\hat{P}(ab)\sum_{klcd}w_{cd}^{kl}t_{lk}^{ac}t_{ij}^{db} = -\frac{1}{2}\hat{P}(ab) \sum_{c} t_{ij}^{ac} \sum_{kld} w_{cd}^{kl} t_{kl}^{bd} = -\frac{1}{2}\hat{P}(ab) \sum_{c} t_{ij}^{ac} I,
+\end{equation}
+where intermediate $I$ defined by equation (\ref{I4}) and it is calculated only once during iteration.
+\begin{equation}\label{I4}
+	I = \sum_{kld} w_{cd}^{kl} t_{kl}^{bd}
+\end{equation}
+Considered $Q_4$ computed without intermediates must be calculated for all $t_{ij}^{ab}$, and it is easy to see that this operation scales as $\mathcal{O} (N_{particles}^4\cdot N_{holes}^4)$ number of flops. Implementation of intermediate \ref{I4} reduces power of $N_{holes}^4$ by two.
+
+\subsubsection{Mapping}
+
+To calculate permutations and to update amplitudes we need to know where elements should be placed in the original matrix. In the end of CCD iteration we obtain amplitudes in a form of $t_{ij}^{ab}$ (particle + particle = hole + hole), so we need to know which elements to place into, for example, (particle - hole = hole - particle) matrix, which is needed for $L_3$ diagram. In addition to that information about place in the new matrix is needed. \classname{getRowMap} and \classname{getRowMap} functions have the simplest posible implementation for these mentioned one-to-one correspondence. Given \classname{channelindexpair} object as an input, they return an integer index, so we know where this object is located in the mapping matrix. Code listing on figure \ref{fig:L3update} shows how these functions are called.
+We planned to use hash tables from the standard library and store \classname{ChannelIndexPair} as value and index as a key. That could provide us with a faster search algorithm. However due to an unexpected bug, we have not managed to make it work.
+\begin{figure}
+\begin{lstlisting}[language=C++]
+for(unsigned int chan = 0; chan < ChannelVariety.size(); chan++){
+ 	channel onechannel = ChannelVariety.at(chan);
+   	symblock amplitudes = m_pMhhMpTBlock.at(chan);
+   	for(unsigned int ai = 0; ai < onechannel.m_ParticleMinusHoleVec.size(); ai++){
+   		for(unsigned int jb = 0; jb < onechannel.m_HoleMinusParticleVec.size(); jb++){
+   			int a = amplitudes.getRowMap(ai).first();
+   			int i = amplitudes.getRowMap(ai).second();
+   			int j = amplitudes.getColMap(jb).first();
+   			int b = amplitudes.getColMap(jb).second();
+   			double value = updateAmplitudesL3(a,b,i,j);
+   			m_pMhhMpTBlockPrev.at(chan).setElement((int)ai, (int)jb, value);
+   		}
+   	}
+}
+\end{lstlisting}
+\caption{Update of $L_3$ diagram.}\label{fig:L3update}
+\end{figure}
+
+Mapping of channels with unique value of $\mathbf{k}$ should be considered as an alternative scheme for the organization of channels.
+As it was already described in sections \ref{ccdsolversec}, \ref{channelsection} and \ref{symblocksection}, we create a vector of channel objects, where each one contains information about unique value of interaction symmetry. When calculating one chosen diagram, say $L_3$, loop goes over all channels in \classname{ChannelVariety} vector and calculates $L_3$ with the code presented on figure \ref{fig:L3}. It can be seen from the listing that a simple storing scheme for channels by bonding them to the ascending index of the vector element comes with a drawback that is absence of flexibility. Each particular channel does not necessarily contains all possible block-matrices. In the listing there is check if they contains non-zero \classname{m_ParticleMinusHoleVec} and \classname{m_HoleMinusParticleVec} blocks. Instead it can be much more efficient to go through channels that already have these non-zero blocks.
+
+\begin{figure}
+\begin{lstlisting}[language=C++]
+void ccd::L3(){
+	for(unsigned int chan=0; chan < ChannelVariety.size(); chan++)
+	{
+		channel onechannel = ChannelVariety.at(chan);
+		if (onechannel.m_ParticleMinusHoleVec.size()*
+			onechannel.m_HoleMinusParticleVec.size() != 0)
+			{
+			m_pMhhMpTBlock.at(chan).setMatrix(
+			m_pMhhMpTBlockPrev.at(chan).getMatrix()*
+			m_hMphMpVBlock.at(chan).getMatrix());
+			}
+	}
+}
+\end{lstlisting}
+\caption{$L_3$ diagram calculation.}\label{fig:L3}
+\end{figure}
+
+Each channel can be distinguished from other by its unique combination of quantum numbers(lets denote them as $U_i$). We can iterate before the channel setup and check how many $U_i$ combinations exist. After that it can be created an one-dimensional array of symmetry block objects with a link between $U_i$ and index of an object in this array. Afterward some mapping can be created, where we connect indices in the array with particular non-zero blocks.
+
+\subsubsection{Parallelization}
+
+Message Passing Interface(MPI) and Multi Processing(MP) are tools which come to mind last, after all mathematical optimization is implemented. MPI is a standard developed for the distributed memory architectures, while MP is is an application programming interface used for the shared memory architecture.
+
+
+
+All mentioned optimization technicalities were skipped in our implementation as the main goal of the CCD solver was to produce the benchmark information for CCQMC solver. We are able to run simple calculations for the 3D electron gas with 14 electrons up to 13 shells on a typical personal computer.
+
+
 
 \section{Occupation Number Representation of SD}\label{occnumrep}
 We consider a common energy diagram and show how it is possible to translate it into occupation number representation. 
@@ -2842,40 +2916,23 @@ The probability for excip to be killed/cloned is proportional to the diagonal ma
 P_{\text{death}} = \delta \tau | A (H_{nn}-S) | \frac{1}{N_a p_{size}(s) p_{\text{clust}} (e|s)} ,
 \end{equation}
 
-\begin{figure}[!ht]
+\newpage
+
+\begin{figure}[!h]
 \begin{center}
 	\begin{tikzpicture}[node distance=2cm]
 	\node(SelectCluster)[roundrect]{Select cluster size according exponential distribution $p_{size}(s)=\frac{1}{2^{s+1}}$};% of one particle in one dimension};
-	
 	\node(ConstructCluster)[roundrect, below of=SelectCluster, yshift=-0.5cm]{Select excitations according to rules from tab. \ref{tab:cpluster}};
-	
 	\node(ProductCluster)[roundrect, below of=SelectCluster, yshift=-0.5cm]{Take product of excitation operators : $\hat{a}_{i}^{a}\hat{a}_{jk}^{bc} \rightarrow \hat{a}_{ijk}^{abc}$};
-	
-	
 	\node(KetSign)[roundrect, below of=ProductCluster, yshift=-0.5cm]{determine sign of product: $\ket{D_0} \rightarrow \pm \ket{D_n}$};
-	
 	\node(SelectBra)[roundrect, below of=KetSign, yshift=-0.5cm]{Select random single or double excitation of $\ket{D_n} = \ket{D_{ijk}^{abc}} \rightarrow \hat{a}_{ik}^{ca}$};
-	
 	\node(BraSign)[roundrect, below of=SelectBra, yshift=-0.5cm]{Calculate sign of action $\hat{a}_{ik}^{ca}\ket{D_0} \rightarrow \pm \ket{D_m} $ };
-	
 	\node(Offdiagonal)[roundrect, below left of=BraSign, yshift=-0.5cm, xshift=-1.5cm ]{Calculate $P_1 \propto \bra{D_m}\hat{H} \ket{D_n}$};
-	
 	\node(Diagonal)[roundrect, below right of=BraSign, yshift=-0.5cm,xshift=1.5cm]{Calculate $P_2 \propto \bra{D_n}\hat{H} \ket{D_n}-S$};
-	
-	
 	\node(CreateExcip)[roundrect, below of=Offdiagonal, yshift=-0.5cm]{Create excip($\pm$) at $\bra{D_m}$ with probability $P_1$};
-	
 	\node(KillExcip)[roundrect, below of=Diagonal, yshift=-0.5cm]{Supress excip($\pm$) at $\ket{D_n}$ with probability $P_2$ by creating an opposite-signed excip};
-	
 	\node(StoreExcip)[roundrect, below of=KillExcip, yshift=-0.5cm, xshift=-3cm]{Store excips and control population};
-	
 	\node(TuneS)[roundrect, below of=StoreExcip, yshift=-0.5cm]{Adjust parameter $S$ according to population number};
-	
-	%	
-	%	\node(Check E)[roundrect, below of=Update T2, yshift=-0.5cm]{Check if $|E_{n+1}-E_n| < \epsilon$};
-	%	
-	%	\node(Finish)[roundrect, below of=Check E, yshift=-0.5cm]{Calculate $\frac{E_{\text{tot}}}{A}$};
-	%	
 	\draw [arrow] (SelectCluster) -- (ConstructCluster);
 	\draw [arrow] (ConstructCluster) -- (ProductCluster);
 	\draw [arrow] (ProductCluster) -- (KetSign);
@@ -2888,13 +2945,10 @@ P_{\text{death}} = \delta \tau | A (H_{nn}-S) | \frac{1}{N_a p_{size}(s) p_{\tex
 	\draw [arrow] (KillExcip) -- (StoreExcip);
 	\draw [arrow] (CreateExcip) -- (StoreExcip);
 	\draw [arrow] (StoreExcip) -- (TuneS);
-	
-	
 	\draw [arrow,rectangle connector=-8cm] (TuneS) to node[descr] [anchor=north]{New Sample} (SelectCluster);
 	%	\draw [arrow] (Check E) -- node [anchor=east]{Yes} (Finish);
 	%\background{Setup system}{Set T2}{Calc CCDT}{Calc D10}{Wave-function}
 	%\background{Setup system}{Set T2}{Calc CCDT}{Calc D10}{Wave-function}
-		
 	\begin{pgfonlayer}{background}
 	% Compute a few helper coordinates
 	\path (SelectCluster.west |- SelectCluster.north)+(-0.5,0.5) node (a) {};
@@ -2903,21 +2957,19 @@ P_{\text{death}} = \delta \tau | A (H_{nn}-S) | \frac{1}{N_a p_{size}(s) p_{\tex
 	(a) rectangle (b);
 	\path (a.west |- a.north)+(-0.5,0.2) node (atext) {Sampling $\ket{\Psi_{CC}}$};
 	\end{pgfonlayer}
-		
 	\begin{pgfonlayer}{background}
 	% Compute a few helper coordinates
 	\path (SelectBra.west |- SelectBra.north)+(-0.5,0.5) node (a) {};
 	\path (SelectBra.south -| SelectBra.east)+(+0.5,-0.5) node (b) {};
 	\path[fill=blue!10,rounded corners, draw=black!50, dashed]
 	(a) rectangle (b);
-	
 	\path (a.west |- a.north)+(-0.5,0.2) node (atext) {Sampling $\hat{H}$};
-	
 	\end{pgfonlayer}
 	\end{tikzpicture}
 \end{center}
 \caption{CCQMC sampling work-flow. } \label{figccqmcWF}
 \end{figure}
+\clearpage
 
 \section{Sampling of the action of the Hamiltonian}
 The sampling of the action of the Hamiltonian is performed by choosing random single or double excitation of collapsed wavefunction $\ket{D_m}$ for the bra-part $D_{\{i\}}$. We denote obtained determinant as $D_n$.
@@ -3013,13 +3065,70 @@ The diagonal matrix elements are calculated with the following expression:
  In order to observe the correct dynamics, we must carefully accumulate all negative signs and take them into account before spawning an excip.
 
 
-\section{CCQMC solver class}
+\section{CCQMC code structure}
+
+ We were not able to find any description of the CCQMC algorithm implementation in literature. To our knowledge there is the only one implementation exists, developed by the authors of the algorithm. When we started writing code we knew not a lot about technicalities of CCQMC implementation. Therefore, we decided to start with just one class and keep code as simple as possible to illuminate potential sources of errors.
+ 
+ When coded we were guided by the paradigm formulated by Kent Beck, "Make it work, make it right, make it fast". When implementing the couple cluster doubles truncation for the electron gas we found it difficult to split solver into classes. It was found later that the class separation is necessary for including other systems and higher truncation levels.
+ 
+ The main difficulty if CCQMC algorithm is to implement the sign structure of wavefunction correctly. While we use bitstring representation of determinants, we found it useful to start with a vector representation. Below we present a code that can help to understand the basic concept, however it should be considered as a kind of unit test and not a part of the algorithm. We consider determinant $\ket{D}_{ij}^{ab}$ as a small vector, where we write all creation/annihilation operators in a predetermined order. We look at the following example:
+
+\begin{equation*}
+\ket{D}_{ij}^{ab} \rightarrow [ i,j\ \vdots \ a,b]
+\end{equation*}
+ This is helpful as it allows to construct the exact creation/annihilation string of operators in correct order:
+ \begin{equation*}
+[ i,j \ \vdots \ a,b] \rightarrow \hat{c}^\dagger_a \hat{c}^\dagger_b \hat{c}_i \hat{c}_j.
+ \end{equation*}
+If during sampling we choose excitor $\hat{c}^\dagger_a \hat{c}^\dagger_b \hat{c}_j \hat{c}_i$, which by action on the reference collapses the wavefunction into $-\ket{D}_{ji}^{ab}$. Vector representations of mentioned excitors will be different:
+\begin{equation*}
+[ i,j\ \vdots \ a,b] \neq [ j,i\ \vdots \ a,b].
+\end{equation*}
+This slows down algorithm significantly, however eliminates one source of errors: we don't need to obtain the phase by acting with one annihilation/creation operator on the given Slater determinant.
+ 
+\begin{figure}[h!]
+\begin{lstlisting}[language=C++]
+auto it = find_if(TemporaryStorage.begin(), TemporaryStorage.end(), [&SampledCluster](const std::vector<int>& EachDet) {return std::search(EachDet.begin(), EachDet.end(), SampledCluster.begin(), SampledCluster.end()) != EachDet.end();});
+if (it != TemporaryStorage.end()){
+auto index = std::distance(TemporaryStorage.begin(), it);
+TemporaryStoragePopulation.at((index)) += (-1)*SignOfCluster;
+} else {
+TemporaryStorage.push_back(SampledCluster);
+TemporaryStoragePopulation.push_back((-1)*SignOfCluster);
+}
+\end{lstlisting}
+\caption{Finding of Slater determinant in vector representation.}\label{fig:CCQMCfindDetVector}
+\end{figure}
+
+
+to be continued:\\
+
+%ideas:\\
+% 
+% So solver takes a basis class as an input with the condition that odd/even indices of single particle states corresponds to states with different spins.
+%
+% While we began with writing general code for including at least single, double and triple excitations, we ended with functions for the double excitations only with lost of generality.
+
+
+
+
+
+
 
 
 \section{Possible optimization}
+Based on our observations the $better$ way to write the CCQMC solver is to split different parts of the algorithm into the class structure described below.
+First of all calculation of $P_gen$ probabilities may differ for various systems, so the code for this task must be a part of the basis class.
+The purpose of the main solver class should be implementation of the main imaginary-time loop, possibly, with a role of the MPI load balancer.
+Vectors with populations and determinants is better to keep as a separate class, which makes it more flexible to change between storage data types and search algorithms. It can definitely be needed during debugging phase in the development of code and benchmarking of the results.
 
+Advantages of the parallel computing is natural to use for Monte Carlo methods. Number of samples can be increased by the factor of number of CPU cores without considerable increase of the execution time. However parallelization of the algorithm should be implemented with care. The first problem might be increased covariance caused by the quality of random number generator. The second is a load balancing scheme, which we propose below.
+Master process performs initial sampling and creates an object with populations and determinants. Then each MPI-child process receives a copy of this object. Sampling of all cluster sizes is performed independently by each child process and sent back to the master without any additional data processing.
+After all the objects with populations and determinants are gathered, master process performs annihilation step by merging all objects into collective storage at this particular imaginary-time step. This require a significant amount of CPU time and can be speed up by OpenMP and a smart algorithm for sorting/searching elements in arrays. 
+Also, it should be noted that during annihilation step child processes are in a "sleep" state. It happens because of the fact, they need an updated list with excips and their total number to start new sampling.
 
-
+This study has found that development of the code for the CCQMC algorithm requires continuous monitoring of different parameters during simulations. This usually includes number of spawning/death events, sign of spawned excips, total number of positive/negative death occurrences, event distribution over cluster size etc.
+We suggest that output of debug information should be separated into a standalone class, and developer must pay particular attention to it. In our simulations we used a simple approach of appending a datafile in the end of every $\tau$-loop. Python environment was then employed to produce real-time plots. Plotting directly from C++ may be the best choice here due to speed of disk write operations.  
 
 \chapter{Results and Discussion}
 
@@ -3037,7 +3146,7 @@ CCD approximation for the electron gas has been extensively studied by many rese
 
 
 
-Not very physical to compare results up to machine precision($10^{-16}$). Simple because of tolerance for the iterative process. We used $10^{-6}$. due to precision of different constants \footnote{We refer here to the Planck constant, the speed of light, the fine-structure constant etc. which are used in \classname{setUpUnits} function fo the electron gas.} used to set up units correctly. These constants are usually determined to about the 5-8th decimal. Additionally taking into account round-off errors or minor differences in the implementation, we think that agreement in result of other codes up to the $10^{-6}$ due to precision -- eto fakt, po kotoromy my schitaem rezultaty correktnymi.
+However comparison of results with precision beyond 6 digits might be useful only for specific debug purposes. We used $10^{-6}$ tolerance for the iterative process. Besides, precision of different constants \footnote{We refer here to the Planck constant, the speed of light, the fine-structure constant etc. which are used in \classname{setUpUnits} function fo the electron gas.} used to set up units correctly is usually determined to about the 5-8th decimal. Additionally taking into account round-off errors or minor differences in the implementation, we think that agreement in results of other codes up to the $10^{-6}$ due to precision -- eto fakt, po kotoromy my schitaem rezultaty correktnymi.
 It is apparent from this table that the results are consistent within mentioned numerical precision.
 
 \begin{landscape}
@@ -3050,25 +3159,46 @@ It is apparent from this table that the results are consistent within mentioned 
 		$r_s$ & States & $\Delta E_{CCD}$ \cite{MillerQuantumMechanicalStudies2017} & $\Delta E_{CCD}$ \cite{HansenCoupledclusterstudies} & $\Delta E_{CCD}$ \cite{BaardsenCoupledclustertheoryinfinite2014} & $\Delta E_{CCD}$\\
 		\hline
 		\hline
-		1.0 & 54 & -0.3178228436889338 & -0.317822843688933   &  		 &  -0.317823627173286	\\
-		1.0 & 66 & -0.3926965898061968 & -0.3926965898061966  &  		 &  -0.392697326892003	\\
-		1.0 & 114 & -0.4479105961757175 & -0.4479105961757175 & -0.447909&  -0.447911467077516  \\
-		1.0 & 162 & -0.4805572589306421 & -0.4805572589306416 &  		 &	-0.480557602520734  \\
-		1.0 & 186 & -0.4855229317521320 & -0.4855229317521318 & -0.485523&	-0.485523265841696  \\
-		1.0 & 246 & -0.4929245740023971 & -0.4929245740023975 &  		 &  -0.492924891224881	\\ 
-		1.0 & 294 & -0.4984909094066806 & -0.4984909094066818 &  		 &	-0.49849121565881   \\
-		1.0 & 342 & -0.5019526761547777 & -0.5019526761547779 &  		 &	-0.501952973776421  \\
-		1.0 & 358 & -0.5025196736076414 & -0.502519673607641  & -0.502523& 	-0.50251996951923   \\ \hline
-		0.5 & 114 & -0.5120153541478306 & -0.5120153541478306 & -0.512015& 	\\
-		0.5 & 186 &	-0.5114620616957333	&			    	  & -0.553329& -0.553329746087795 \\
-		0.5 & 342 & -0.5729645498903680 & -0.572964549890367  &  		 &	-0.572964623901421\\ 
-		0.5 & 358 &	-0.5297417436322546	&		    		  & -0.573678& -0.573680638707031\\ \hline	
-		2.0 & 114 & -0.3577968843144996 & -0.3577968843144996 & -0.357798& -0.357799041020026	\\
-		2.0 & 342 & -0.4014136184665558 & -0.4014136184665555 &  		 & -0.401414909785224	\\
+            1.0 & 54 & -0.3178228436889338 & -0.317822843688933   &           & -0.3178230699319593  \\
+            1.0 & 66 & -0.3926965898061968 & -0.3926965898061966  &           & -0.3926968074770886  \\
+            1.0 & 114 & -0.4479105961757175 & -0.4479105961757175 & -0.447909 & -0.4479109389185165  \\
+            1.0 & 162 & -0.4805572589306421 & -0.4805572589306416 &           & -0.4805570782443642  \\
+            1.0 & 186 & -0.4855229317521320 & -0.4855229317521318 & -0.485523 & -0.4855227418241649  \\
+            1.0 & 246 & -0.4929245740023971 & -0.4929245740023975 &           & -0.4929243692209991  \\
+            1.0 & 294 & -0.4984909094066806 & -0.4984909094066818 &           & -0.4984906939593084  \\
+            1.0 & 342 & -0.5019526761547777 & -0.5019526761547779 &           & -0.5019524529049425  \\
+            1.0 & 358 & -0.5025196736076414 & -0.502519673607641  & -0.502523 & -0.5025194488388953  \\ \hline
+            0.5 & 114 & -0.5120153541478306 & -0.5120153541478306 & -0.512015 & -0.5120152296730573  \\
+            0.5 & 186 & -0.5114620616957333 &                     & -0.553329 & -0.553329520936615   \\
+            0.5 & 342 & -0.5729645498903680 & -0.572964549890367  &           & -0.572964399507112   \\
+            0.5 & 358 & -0.5297417436322546 &                     & -0.573678 & -0.5736804143578936  \\ \hline    
+            2.0 & 114 & -0.3577968843144996 & -0.3577968843144996 & -0.357798 & -0.3577955282575226  \\
+            2.0 & 342 & -0.4014136184665558 & -0.4014136184665555 &           & -0.4014117905655014  \\
 	\end{tabular}
 \end{table}
 
 \end{landscape}
+
+
+As a simple unit test we compare our results for a small number of electrons with the result of the CCD solver from \cite{Hjorth-Jensenadvancedcoursecomputational2017}. The table \ref{tab:unittest} illustrates agreement in the correlation energy up to 15 significant digits of precision.
+
+\begin{table}[h]
+\centering
+\captionsetup{width=.8\textwidth}
+\caption{CCD iteration comparison with solver from \cite{Hjorth-Jensenadvancedcoursecomputational2017} for the HEG. Here, $N_e=2$, $N_s=66$, $r_s=1.0$, and there is no mixing. }
+        	\begin{tabular}{rlll}
+        		n & $\Delta E_{CCD}$     & $\Delta E_{CCD}$ \cite{Hjorth-Jensenadvancedcoursecomputational2017} \\
+        		MBPT2 & -0.02080623248720259 & -0.0208062324872026  \\
+        		0 & -0.01833394188507821 & -0.0183339418850782  \\
+        		1 & -0.01864313296809337 & -0.01864313296809333 \\
+        		2 & -0.01860449158525421 & -0.01860449158525414 \\
+        		3 & -0.01860932269795203 & -0.01860932269795206 \\
+        		4 & -0.01860871870720909 & -0.01860871870720907 \\
+\end{tabular}
+\label{tab:unittest}
+\end{table}
+                              
+
 
 
 \section{Thermodynamic limit estimates}
@@ -3077,9 +3207,140 @@ In the thermodynamic limit (TDL) the density of the electron gas remains constan
 
 The second difficulty arises from the fact that the many-body wavefunction is constructed from a finite one-particle basis set. By introducing limited number of single-particle states($M$) we limit kinetic energy values for the electron gas. Strictly, both limits should be found: TDL($N\rightarrow \infty$) and complete basis set(CBS) limit($M \rightarrow \infty$)
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{cbs}
+	\caption{The CBS limit for the 3D electron gas is extrapolated by a polynomial of degree two in $N_{states}^{-1}$. $N_{states}$ denotes maximum number os single-particle states included in basis. Calculations were performed for 14 electrons. We used Miller's\cite{MillerQuantumMechanicalStudies2017} results for higher number of states([406 - 2090]). Extracted limit for $N_{states} \rightarrow \infty$ was found to be -0.514204128446.}
+	\label{fig:CBS}
+\end{figure}
 
 
-\chapter{Conclusions And Future Prospects}
+
+
+
+
+\section{CCQMC population dynamics}
+
+While the electron gas is a common test system for deterministic many-body algorithms, its role as a proving ground for the CCQMC method should be considered with caution.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{thomEG}
+	\caption{Ne cc-pVQZ CCSDTQ calculations starting with different initial
+		particle numbers at the reference and different timesteps. (a): With a carefully
+		chosen low timestep and initial population, a plateau is visible. An increased
+		timestep and initial population overshoot the plateau but have a shoulder.
+		The lower panel shows a maximum of the particle ratio at the position of
+		the shoulder and plateau. (b): "Shoulder plots" allow shoulder height to be
+		read off easily and calculations compared. Reproduced from \cite{SpencerDevelopmentsstochasticcoupled2016}, with the permission of AIP Publishing. }
+	\label{fig:thomEG}
+\end{figure}
+
+
+
+The absence of singles, which is an indisputable advantage for deterministic methods, presents some difficulties for the stochastic coupled cluster. We try to examine these difficulties by analyzing sampling of all cluster sizes.
+
+\begin{equation}\label{samplingsize}
+   \begin{tikzpicture}[>=stealth,baseline,anchor=base,inner sep=0pt]
+   \matrix (foil) [matrix of math nodes,nodes={minimum height=0.5em}] {
+   	\langle & D_n & \mid & H & - & S & \mid & D_m & \rangle \\
+   };
+   \path[->] ($(foil-1-7.north)+(0,1ex)$)   edge[red,bend left=-45]  ($(foil-1-2.north)+(0,0.5ex)$);
+   \path[->] ($(foil-1-7.north)+(0,1.5ex)$)   edge[red,bend left=-45]  ($(foil-1-2.north)+(0,1.5ex)$);
+   \path[->, dashed] ($(foil-1-7.south)-(0,1ex)$)   edge[blue,bend left=45]  ($(foil-1-2.south)-(0,1ex)$);
+
+   \end{tikzpicture}
+\end{equation}
+
+Foremost, we sample cluster of size zero, which corresponds the case when $\ket{D_m}$ is equal to the reference in (\ref{samplingsize}). We denote the level of excitation with red lines for the double and blue dashed line for the single excitation in (\ref{samplingsize}). For the electron gas we can choose only double excitation and spawn an excip on the double-excited determinant. There is no death of excips at cluster of size zero before the tunning of parameter $S$. That is, before annihilation plateau this sampling step produces only spawning events. And since we choose cluster size according to the exponential distribution, the reference is sampled $N_{ex}/2$ times, where $N_{ex}$ is the total population of excips.
+
+Furthermore clusters of size one are sampled, where we can choose as $\ket{D_m}$ double- triple-excited determinant etc. Again, the bra-part should be single or double excitation of $\ket{D_m}$. Given that we refuse to choose singles, there is no spawning events for this cluster size. Only death events can occur in this case.
+The number of samples is $N_{ex}/4$, which is two times less than the one for the reference. Hence possible outcome for death events is lower than for the spawn events from the cluster of size one. 
+
+
+Lastly, we consider the clusters of size two. If we now turn to an atomic or a molecular system, we can construct a cluster of size two by picking a single excitation and then adding another single or double to it. Cluster, constructed from two singles, provides a death opportunity within CCSD truncation. Moreover, it also can initiate a spawning event(blue dashed line in (\ref{samplingsize})). 
+The electron gas differs from systems with single excitations in the way that described mechanism of spawning/death is impossible. Within CCSD approximation the only possible form of these composite clusters is double + double. This results into quadruply-excited determinant in the ket part and double-excited determinant in the bra part. Quadruples participate in death process can be ignored within CCSD. Summing up the last arguments it is obvious that clusters of size two are source of spawning events only.
+
+
+%Being Cautious 15
+
+
+Critical population is needed  - plateau, different for systems, basis sets. Requires additional investigation.
+Finding search for the annihilation plateu is critical part of ccqmc. spenser and thom claim that with 
+
+
+It has been demonstrated that careful selection of simulation parameters might help to find annihilation plateau by eye \cite{SpencerDevelopmentsstochasticcoupled2016}. Spencer and Thom demonstrated that plateau is easy to see (figure \ref{fig:thomEG}(a)) for small values of $\tau$. However, these results were based upon data for the neon atom within CCSDTQ truncation. As it has been already discussed, every cluster size within such truncation results in death/spawn events. To verify the correctness of our implementation we need to obtain similar dynamics evolution in imaginary-time.
+The most difficult parts of the CCQMC algorithm are the variation of the population on reference $N_0$ and the certainty of the sign structure. Since excips on reference are particles of another kind, it was decided that the best method to test sign structure was to fix population on reference and investigate population dynamics of the excited space only. We were unable to find in literature similar plots for the CCD truncation of the electron gas. We expected that behavior of the population of the excited space($N_{ex}$) should follow the pattern observed on figure \ref{fig:thomEG}(a). Figure \ref{fig:nx2k} presents dependence of $N_{ex}$ on $\tau$ for 14 electrons and 54 single-particle states. Earlier studies of the electron gas with the CCQMC method reported that for $r_s = 1$ and CCSDT the critical populations ranges from $10^4$ to $10^5$ \footnote{Estimation was obtained by the visual inspection of figure 8 in \cite{SpencerDevelopmentsstochasticcoupled2016}} for basis sizes from 203 to 2109 single particle states. Besides it was outlined that for the smaller values of $r_s=0.5$ the sufficient number of excips decreases to the value of roughly $10^3$ \footnote{within the CCSDT truncation for the 3D electron gas}. The current state of knowledge fails to establish correlations between the critical number of excips and the number of the basis state functions together with the level of correlation inside studied system. As it can be seen on figure \ref{fig:CCDvsCCDT}, the difference in the correlation energies for CCD and CCDT truncations decreases on decreasing $r_s$. Based on this we expected that the plateau height for $r_s=0.5$ should be near $10^3$ excips. Our estimations are presented on figure \ref{fig:nx2k}.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Nex2000new}
+	\caption{14 electrons rs 0.5 without tunning S etc tau 0.0005 2000 iter }
+	\label{fig:nx2k}
+\end{figure}
+We tested same code for 162 basis state functions and observed same pattern, but with number of excips grown closer to $10^4$. These results would seem to suggest that the sign structure of the wave-function is correct.
+However, these results should be treated cautiously since population on the reference was fixed in the beginning of the simulation. Additionally it can be seen from figure \ref{fig:platFind} that after 1600 iteration (that corresponds to the value of $\tau=0.6$ on figure \ref{fig:nx2k}) number of death and spawn events fluctuates around some value. That can mean that spawn and death probably give equal amount of positive and negative excips.
+
+	
+	
+
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Nex20000}
+	\caption{14 electrons rs 0.5 with tunning S etc tau 0.0005 20000 iters}
+	\label{fig:nx20k}
+\end{figure}
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{CCDvsCCDT}
+	\caption{14 electrons diff rs vs hansen}
+	\label{fig:CCDvsCCDT}
+\end{figure}
+
+
+
+\begin{landscape}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{platFind}
+	\caption{14 electrons rs 0.5 without tunning S etc }
+	\label{fig:platFind}
+\end{figure}
+
+\end{landscape}
+
+\begin{landscape}
+	
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{platFindStune}
+		\caption{14 electrons rs 0.5 with tunning S etc }
+		\label{fig:platFindStune}
+	\end{figure}
+	
+\end{landscape}
+
+
+
+
+
+
+Proposed results
+
+Small basis sets
+
+
+
+\section{Conclusions And Future Prospects}
+
+The method is quite new but seems to be a very promising one. There is still lack of the strict teory on convergence 
+
+there are some studies on optimisation of the sampling schemes
+At the moment of writing this thesis the only available results published were less than one year old
 
 
 \appendix
