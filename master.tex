@@ -96,8 +96,7 @@
 %\bibliography{references}
 
 \author{Andrei Kukharenka}
-\title{Coupled Cluster Quantum Monte Carlo Studies
-	of Electron Gas}
+\title{Stochastic Optimisation for Mady-Body Problem}
 \date{August 2018}
 
 \begin{document}
@@ -3195,19 +3194,27 @@ As a simple unit test we compare our results for a small number of electrons wit
 \label{tab:unittest}
 \end{table}
                               
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{CCDvsCCDT}
+	\caption{The correlation energy for 14 particles and 54 single-particle states for different densities of the electron gas. CCDT results were taken from \cite{HansenCoupledclusterstudies}.}
+	\label{fig:CCDvsCCDT}
+\end{figure}
 
 
+\section{Thermodynamic and complete basis set limit estimates}
 
-\section{Thermodynamic limit estimates}
-
-In the thermodynamic limit (TDL) the density of the electron gas remains constant while the particle number tends to infinity($N\rightarrow \infty$). However many-body methods scales relatively expensive with $N$. Calculations for large $N$ were performed by several researchers and are available in a few codes with extensive parallelism. Dazhe nesmotra na eto only finite systems can be studied. Typical strategy is to to begin with $N$ electrons in a simulation-cell, and approach the thermodynamic limit using extrapolation techniques.
+In the thermodynamic limit (TDL) the density of the electron gas remains constant while the particle number tends to infinity($N\rightarrow \infty$). However many-body methods scales relatively expensive with $N$. Calculations for large $N$ were performed by several researchers and are available in a few codes with extensive parallelism. But even despite this only finite systems can be studied. Typical strategy is to to begin with $N$ electrons in a simulation-cell, and approach the thermodynamic limit using extrapolation techniques. Instead we can try to treat as many particles as possible with stochastic methods. Volume with a define number of particles can be fixed, then number of particles can be increased together with the volume, while the density remains the same. Increasing number of particles will lead to convergence of the energy to the true value.
 
 The second difficulty arises from the fact that the many-body wavefunction is constructed from a finite one-particle basis set. By introducing limited number of single-particle states($M$) we limit kinetic energy values for the electron gas. Strictly, both limits should be found: TDL($N\rightarrow \infty$) and complete basis set(CBS) limit($M \rightarrow \infty$)
+
+Previous studies \cite{ShepherdConvergencemanybodywavefunction2012} of the plane wave basis expansion showed, that the correlation energy converges to the  CBS limit as reciprocal number of the basis state functions, independently of chosen cut-off scheme. Shepherd et al. in their work introduced an exceptional extrapolation scheme \footnote{It is called $single$-$point$ extrapolation}, which improves convergence for high-correlation regimes. However, since we study densities corresponding to the low correlations in the electron gas, we use a simple polynomial extrapolation. Our extracted value for the correlation energy is -0.5142, while FCIQMC study report \cite{ShepherdInvestigationfullconfiguration2012} value of -0.5325(4). Spenser and Thom\cite{SpencerDevelopmentsstochasticcoupled2016} found this value to be -0.5155(3) with CCQMC CCD. All presented values are obtained for the 3D electron gas with $r_s=1.0$. Initiator approximation was used for the CCQMC algorithm. Recent paper by Neufeld and Thom\cite{Neufeldstudydenseuniform2017} reported result for 11 150 basis functions without initiator approximation -0.51450(9), which is the closest result to the extrapolation of deterministic CCD. The difference in CCD CCQMC results might be explained by the bias introduced by the initiator approximation.
+
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{cbs}
-	\caption{The CBS limit for the 3D electron gas is extrapolated by a polynomial of degree two in $N_{states}^{-1}$. $N_{states}$ denotes maximum number os single-particle states included in basis. Calculations were performed for 14 electrons. We used Miller's\cite{MillerQuantumMechanicalStudies2017} results for higher number of states([406 - 2090]). Extracted limit for $N_{states} \rightarrow \infty$ was found to be -0.514204128446.}
+	\caption{The CBS limit for the 3D electron gas is extrapolated by a polynomial of degree two in $N_{states}^{-1}$. $N_{states}$ denotes maximum number os single-particle states included in basis. Calculations were performed for 14 electrons. We used Miller's\cite{MillerQuantumMechanicalStudies2017} results for higher number of states([406 - 2090]). Extracted limit for $N_{states} \rightarrow \infty$ was found to be -0.514204.}
 	\label{fig:CBS}
 \end{figure}
 
@@ -3257,13 +3264,7 @@ The number of samples is $N_{ex}/4$, which is two times less than the one for th
 Lastly, we consider the clusters of size two. If we now turn to an atomic or a molecular system, we can construct a cluster of size two by picking a single excitation and then adding another single or double to it. Cluster, constructed from two singles, provides a death opportunity within CCSD truncation. Moreover, it also can initiate a spawning event(blue dashed line in (\ref{samplingsize})). 
 The electron gas differs from systems with single excitations in the way that described mechanism of spawning/death is impossible. Within CCSD approximation the only possible form of these composite clusters is double + double. This results into quadruply-excited determinant in the ket part and double-excited determinant in the bra part. Quadruples participate in death process can be ignored within CCSD. Summing up the last arguments it is obvious that clusters of size two are source of spawning events only.
 
-
-%Being Cautious 15
-
-
-Critical population is needed  - plateau, different for systems, basis sets. Requires additional investigation.
-Finding search for the annihilation plateu is critical part of ccqmc. spenser and thom claim that with 
-
+For the successful CCQMC calculations critical population of excips is needed. Search for this population is commonly referred to finding of the the annihilation plateau. Its height may differ for various systems, basis sets and level of correlations. Below we present our findings about possible techniques helping in examining the critical population of excips and development of the code.
 
 It has been demonstrated that careful selection of simulation parameters might help to find annihilation plateau by eye \cite{SpencerDevelopmentsstochasticcoupled2016}. Spencer and Thom demonstrated that plateau is easy to see (figure \ref{fig:thomEG}(a)) for small values of $\tau$. However, these results were based upon data for the neon atom within CCSDTQ truncation. As it has been already discussed, every cluster size within such truncation results in death/spawn events. To verify the correctness of our implementation we need to obtain similar dynamics evolution in imaginary-time.
 The most difficult parts of the CCQMC algorithm are the variation of the population on reference $N_0$ and the certainty of the sign structure. Since excips on reference are particles of another kind, it was decided that the best method to test sign structure was to fix population on reference and investigate population dynamics of the excited space only. We were unable to find in literature similar plots for the CCD truncation of the electron gas. We expected that behavior of the population of the excited space($N_{ex}$) should follow the pattern observed on figure \ref{fig:thomEG}(a). Figure \ref{fig:nx2k} presents dependence of $N_{ex}$ on $\tau$ for 14 electrons and 54 single-particle states. Earlier studies of the electron gas with the CCQMC method reported that for $r_s = 1$ and CCSDT the critical populations ranges from $10^4$ to $10^5$ \footnote{Estimation was obtained by the visual inspection of figure 8 in \cite{SpencerDevelopmentsstochasticcoupled2016}} for basis sizes from 203 to 2109 single particle states. Besides it was outlined that for the smaller values of $r_s=0.5$ the sufficient number of excips decreases to the value of roughly $10^3$ \footnote{within the CCSDT truncation for the 3D electron gas}. The current state of knowledge fails to establish correlations between the critical number of excips and the number of the basis state functions together with the level of correlation inside studied system. As it can be seen on figure \ref{fig:CCDvsCCDT}, the difference in the correlation energies for CCD and CCDT truncations decreases on decreasing $r_s$. Based on this we expected that the plateau height for $r_s=0.5$ should be near $10^3$ excips. Our estimations are presented on figure \ref{fig:nx2k}.
@@ -3291,12 +3292,7 @@ However these results must be interpreted with caution because of the imbalance 
 \end{figure}
 
 
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=0.8\linewidth]{CCDvsCCDT}
-	\caption{The correlation energy for 14 particles and 54 single-particle states for different densities of the electron gas. CCDT results were taken from \cite{HansenCoupledclusterstudies}.}
-	\label{fig:CCDvsCCDT}
-\end{figure}
+
 
 
 
@@ -3329,7 +3325,14 @@ However these results must be interpreted with caution because of the imbalance 
 
 Proposed results
 
-Small basis sets
+Small basis sets - long runs. Find in article.
+
+
+
+foundation fot futher work/study in this field/many body physics
+
+focus ids on the development of the method and the development of the software
+attempt was to develop a program that can easily be extended to other systems
 
 
 
