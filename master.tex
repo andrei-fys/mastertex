@@ -130,30 +130,77 @@
 	
 	\tableofcontents
 	
-\chapter{Introduction}
-	
 \section{Motivation }
-Coupled Cluster Quantum Monte Carlo is a novel $ab\ initio$ wavefunction method allowing to calculate properties of many-body systems. 
-It combines features from two different approaches for treatment of many-body problem. Successful approximation of the true wavefunction with the exponential ansatz provides excellent results and solves a number of important problems, like size consistency and size extensivity. However computer implementation of the high truncations of couple cluster theory is a cumbersome task. It is possible to reduce extremely large spaces of basis functions thanks to stochastic machinery of Monte Carlo methods.
-In our-days density functional theory is the most popular approach\footnote{6 ouf of 10 the most highly cited articles from the period 1904 - 2014 are about density functional theory\cite{httpphysicsdatabasecom}.} among $ab\ initio$ methods to study many-body systems. However this particular electron method meets some complications endeavoring with highly correlated systems and it is hard to find a systematic way for improvement. We believe, coupled cluster theory can overtook leading role for industry and science in the future. 
-The novel stochastic coupled cluster method, bringing the simplicity of implementation, might stimulate the interest to the couple cluster theory, which currently suffers from complexity in implementation and bad scalability for the high orders of truncation. 
-Our goal was to develop a software with implementation of stochastic coupled cluster Monte Carlo method and benchmark it against well studied homogeneous electron gas. There is a limited amount of information is available on the important technicalities of the algorithm. Published articles on topic are less than one year old at the moment of writing this thesis. We hope our study helps to create a foundation for the further development of this promising method.
+Coupled Cluster Quantum Monte Carlo (CCQM)  is a novel $ab\ initio$ quantum
+mechanical many-body methods method that holds great promise in
+tackling the large dimensionalities encountered in various many-body
+calculations.  It combines features from two different approaches for
+the treatment of many-body problem. It includes a successful
+approximation of the true wavefunction with the exponential ansatz and it
+provides excellent results and solves a number of important problems,
+like size consistency and size extensivity as well as having the potential  to handle
+the large dimensionality of basis functions, typically encountered in most wave function based methods like coupled cluster theory.
+It is possible to reduce extremely large spaces of
+basis functions thanks to the stochastic approach inherent  in Monte Carlo methods.
+
+For electronic systems, mean-field methods like density functional
+theory are among the most popular approachw\footnote{6 ouf of 10 the
+	most highly cited articles from the period 1904 - 2014 are about
+	density functional theory\cite{httpphysicsdatabasecom}.} among
+$ab\ initio$ methods to study many-body systems. However, mean field
+methods in general tackle poorly strongly correlated systems.  The
+hope is that this novel CCQM method, with the potential to model
+stochastically complicated states of many-body systems, can together
+with more traditional methods like full configuration interaction
+theory or coupled cluster theory, allow us to tackle the exponential
+growth in dimensionality in a computationally tractable way.
+
+Our goal was to develop a software which implements the stochastic
+coupled cluster Monte Carlo method and benchmark it against other
+familiar methods and apply to selected many-body systems like the
+homogeneous electron gas. There is a limited amount of information
+available on the important technicalities of the algorithm and only
+recently scientific articles on topic have been published. Besides a
+group of Thom {\em et al.} at the university of Cambridge in the UK, our software is the
+only other one existing.  We hope our study helps to create a
+foundation for the further development of this promising method.
 
 
 
 \section{Thesis structure}
-The structure of this thesis has been conceived as an introduction to readers with little- to no-experience in the field of many-body algorithms. Often materials on this topic contain a large amounts of information followed by the detailed mathematical derivations. We tried to make this thesis easy for reading, though still including all key points.
+The structure of this thesis has been conceived as an introduction to
+readers with little- to no-experience in the field of many-body
+algorithms. Often materials on this topic contain a large amounts of
+information followed by the detailed mathematical derivations. We
+tried to make this thesis easy for reading, though still including all
+key points.
 
-The aim of the second Chapter is to stand the many-body problem and to present independent particle model. One possibility to go beyond this model is the coupled cluster method, which includes correlation between particles.
-We take up coupled cluster theory in Chapter 3, discussing the algebraic approach an diagrammatic notation.
-Quantum Monte Carlo methods provide an alternative passage beyond the Hartree-Fock limit. We provide an overview of stochastic methods in many-body physics in Chapter 4, dwelling on Variational Monte Carlo and Projector Monte Carlo.
-Last sections of this chapter contain introduction into stochastic method in the space of Slater determinants(Full Configuration Quantum Monte Carlo) and population dynamics algorithm.
-We believe that this order of presenting material allows reader to acquire quickly general picture of stochastic many-body methods, and particularly the place of coupled Cluster Monte Carlo within it.
-Chapter 6 largely focus on a brief description of the homogeneous electron gas covering the motivation to choose this system as the main object of research in this thesis.
-We than turn to the different aspects of implementation starting in Chapter 7 with a thorough discussion of coupled cluster deterministic algorithm.
-Optimization technicalities together with the class structure are discussed in the first sections. The reminder of this chapter is devoted to stochastic coupled cluster theory and presents the key points needed for producing a computer implementation of the method.
-The final chapters of this thesis are devoted to results of applying deterministic and stochastic couple cluster approaches to the electron gas. 
-
+The aim of the second Chapter is to stand the many-body problem and to
+present independent particle model. One possibility to go beyond this
+model is the coupled cluster method, which includes correlation
+between particles.  We take up coupled cluster theory in Chapter 3,
+discussing the algebraic approach an diagrammatic notation.  Quantum
+Monte Carlo methods provide an alternative passage beyond the
+Hartree-Fock limit. We provide an overview of stochastic methods in
+many-body physics in Chapter 4, dwelling on Variational Monte Carlo
+and Projector Monte Carlo.  Last sections of this chapter contain
+introduction into stochastic method in the space of Slater
+determinants(Full Configuration Quantum Monte Carlo) and population
+dynamics algorithm.  We believe that this order of presenting material
+allows reader to acquire quickly general picture of stochastic
+many-body methods, and particularly the place of coupled Cluster Monte
+Carlo within it.  Chapter 6 largely focuses on a brief description of
+the homogeneous electron gas covering the motivation to choose this
+system as the main object of research in this thesis.  We then turn to
+the different aspects of the implementation starting in Chapter 7 with a
+thorough discussion of the standard coupled cluster algorithm.
+Optimization technicalities together with the class structure are
+discussed in the first sections. The reminder of this chapter is
+devoted to stochastic coupled cluster theory and presents the key
+points needed for producing a computer implementation of the method.
+The final chapters of this thesis are devoted to results of applying
+deterministic and stochastic coupled cluster approaches to the electron
+gas.
 
 
 
@@ -4114,18 +4161,41 @@ This slows down the algorithm significantly, however it eliminates one source of
 \end{figure}
 
 
-to be continued:\\
+Bitstring is much more efficient way to work with determinants, as it has been already discussed. However additional calculation are required when extracting a particular determinant from the cumulative storage vector, since the sign structure in not obtained immediately. The code on figure \ref{fig:CCQMCgetindex} shows how we extracted indices of the creation/annihilation operators.
 
-%ideas:\\
-% 
-% So solver takes a basis class as an input with the condition that odd/even indices of single particle states corresponds to states with different spins.
-%
-% While we began with writing general code for including at least single, double and triple excitations, we ended with functions for the double excitations only with lost of generality.
+\begin{figure}[h!]
+	\begin{lstlisting}[language=C++]
+	boost::dynamic_bitset<> SpawnedOnThisDeterminant = StorageCumulativeDeterminants.at(ExcitorIndex);
+	boost::dynamic_bitset<> particles = SpawnedOnThisDeterminant&~SD_0;
+	int firstpartind = particles.find_first();
+	int secondpartind = particles.find_next(firstpartind);
+	
+	boost::dynamic_bitset<> holes = SD_0&~SpawnedOnThisDeterminant;
+	int firstholeind = holes.find_first();
+	int secondholeind = holes.find_next(firstholeind);
+	\end{lstlisting}
+	\caption{Finding excitations in bitstring representation. SD_0 is the bitstring representation of the reference.}\label{fig:CCQMCgetindex}
+\end{figure}
+
+To obtain so-called phase or sign of the determinant we use a very simple and straightforward algorithm, which can be easily understood from the code on figure \ref{fig:CCQMCphase}.
 
 
-
-
-
+\begin{figure}[h!]
+\begin{lstlisting}[language=C++]
+boost::dynamic_bitset<> SpawnedOnThisDeterminant = StorageCumulativeDeterminants.at(ExcitorIndex);
+boost::dynamic_bitset<> OperatorPair(qsys->getStatesStochastic());
+int i = 0;
+while (i != firstpartind-1){
+   i++;
+}
+for (int ind = firstholeind+1; ind <= i; ind++){
+   OperatorPair.set(ind);
+}
+int power = (OperatorPair&SpawnedOnThisDeterminant).count();
+return std::pow(-1, power);
+\end{lstlisting}
+\caption{Finding the phase in bitstring representation. SD_0 is the bitstring representation of the reference.}\label{fig:CCQMCphase}
+\end{figure}
 
 
 
@@ -4402,13 +4472,28 @@ However these results must be interpreted with caution because of the imbalance 
 \end{figure}
 
 \section{Reference population}
-Population of excips on reference($N_0$) plays important role in the method as it has direct impact on the number of samples on the following iterations. Much to our surprise, we were unable to find any information about its adjustment in the literature. When we checked the sign structure of the population we fixed $N_0$ and did not take into account death on reference. Figure \ref{fig:deathN0} provides the result obtained from this study. As can be seen from the plot, the population on reference gradually dies out. this leads the simulation to divergence, as it can be seen from the upper plot on figure \ref{fig:deathN0}.
-We tried several approaches to vary $N_0$.
+The population of excips on the reference ($N_0$) state plays an important role in the
+method as it has direct impact on the number of samples on the
+following iterations. Much to our surprise, we were unable to find any
+information about its adjustment in the literature. When we checked
+the sign structure of the population we fixed $N_0$. Figure \ref{fig:deathN0} provides the
+result obtained from this study. As can be seen from the plot, the
+population on reference gradually dies out. this leads the simulation
+to divergence, as it can be seen from the upper plot on figure
+\ref{fig:deathN0}. 
 
 
 
 
-We tried several approaches to vary $N_0$. As soon as excips on reference are quasi-exips we cannot spawn them, however such opportunity should be considered. The simplest possible $naive$ approach is to take the total number of attempts to choose a particular determinant divided by the total number of all available variants. However, with this scheme, caution must be applied, as the probability to choose the reference is equal to the probability for all other excips. This scheme destabilizes population and lead to gradual death of reference(see figure \ref{fig:N0tunningNaive}).
+We tried several approaches to vary $N_0$. As soon as excips from the
+reference state are quasi-exips we cannot spawn them, however such
+an opportunity should be considered. The simplest possible $naive$
+approach is to take the total number of attempts to choose a
+particular determinant divided by the total number of all available
+variants. However, with this scheme, caution must be applied, as the
+probability to choose the reference is equal to the probability for
+all other excips. This scheme destabilizes the population and leads to
+a gradual disappearence (death) of the reference state(see figure \ref{fig:N0tunningNaive}).
 
 
 \begin{figure}[ht!]
@@ -4429,7 +4514,16 @@ The second way of tuning $N_0$ was chosen to add to the reference population a s
 \end{figure}
 
 \section{Comments on the energy}
-There are two possibilities to obtain the energy in the CCQMC method. The first one is to sample projected energy, and the second is via evaluation of the energy shift $S$. Both methods can be applied only after stabilizing of the population and correct structure of the wavefunction. This can be determined by the pattern similar to one shown on figure \ref{fig:thomEG}(b). Since none of our proposed schemes to preserve normalization worked, we were unable to estimate energy values. The unnormalized stable simulation showed values of $S$ fluctuating around the value differing from the deterministic result by roughly 5\%. However this must to be interpreted cautiously.    
+There are two possibilities to obtain the energy in the CCQMC
+method. The first one is to sample the projected energy, and the second is
+via the evaluation of the energy shift $S$. Both methods can be applied
+only after having stabilized of the population and correct structure of the
+wavefunction. This can be determined by the pattern similar to the one
+shown in figure \ref{fig:thomEG}(b). Since none of our proposed
+schemes to preserve normalization worked, we were unable to estimate
+energy values. The unnormalized stable simulation showed values of $S$
+fluctuating around the value differing from the deterministic result
+by roughly 5\%. However this must to be interpreted cautiously.
 
 
 
@@ -4456,41 +4550,66 @@ There are two possibilities to obtain the energy in the CCQMC method. The first 
 \end{landscape}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 \chapter{Conclusions And Future Prospects}
 
-The aim of this thesis was to study stochastic formulation of the couple cluster theory. 
-First we started with the review of the literature constituting taxonomy of many-body methods.
-Deterministic coupled cluster theory together with most common Monte Carlo methods for many-body problem were presented. Much effort was put into understanding and presenting the stochastic coupled cluster method in a simple way.
-The computer program using the deterministic CCD theory and CCQMC method was written in C++ with object oriented approach. Our CCD solver reproduced published results for chosen test system: the homogeneous electron gas. It was found that deterministic implementation provides significant benchmark information for the further development of the code for the stochastic solver, especially, for the treatment of the sign problem. Our findings suggest that in general transitionally-invariant systems are not an optimal choice as a test system for the CCQMC method, at least for double truncation level. We explored population dynamics and found that the population of the reference space plays one of the majors roles for the CCQMC algorithm.
-The main focus of our study was on developing a code and exploring the stochastic method.
-Our observations on the choice of data structures, algorithms and optimization techniques are extensively covered. To our knowledge there exists only one implementation of this method besides ours.
-This work contributes by providing foundation for further studies of the CCQMC algorithm and development of a program that can easily be extended to other systems.
-Finally, areas for further research are identified.
+The aim of this thesis was to study stochastic formulation of the
+coupled cluster theory.  First we started with a review of the
+literature constituting the needed taxonomy of various many-body methods.  Deterministic
+coupled cluster theory together with several common Monte Carlo methods
+for many-body problem were presented. Much effort was put into
+understanding and presenting the stochastic coupled cluster method in
+a simple way.  The computer program using the deterministic CCD theory
+and CCQMC method was written in C++ with an object oriented approach. Our
+CCD solver reproduced published results for the chosen test system: the
+homogeneous electron gas. However, our codes are written in  avery flexible way and can easily be extended to other correlated many-body systems.
+
+It was found that the deterministic
+implementation provides a significant benchmark information for the
+further development of the code for the stochastic solver, especially,
+for the treatment of the sign problem. Our findings suggest that in
+general transitionally invariant systems are not an optimal choice as
+a test system for the CCQMC method, at least when only  a specific set of excited states is studied (the so-called doubles excitations).
+
+We explored the population dynamics and found that the population
+of the reference state plays one of the majors roles for the CCQMC
+algorithm.  The main focus of our study was on developing a code and
+exploring the stochastic method.  Our observations on the choice of
+data structures, algorithms and optimization techniques are
+extensively covered. To our knowledge there exists only one
+implementation of this method besides ours.  This work contributes by
+providing a strong foundation for further studies of the CCQMC algorithm and
+development of a program that can easily be extended to other systems.
+Finally, we discuss several areas for further research.
 
 
 
 
 \section{Future outlook}
 
-The CCQMC method is a relatively new. Even despite the fact that the main idea was presented in 2010,  published research on this topic began to arrive only in 2017. Result published till the date of writing this thesis agree with other methods.
-There is no strict theory about convergence, and there are only numerical evidences that successfully implemented algorithm works for particular studied cases for single-reference systems. The sign problem exists for CCQMC method, however it is much more easily treated compared to the DMC, where fixed node approximation should be used. There is a limited theoretical framework for CCQMC sign problem, and only simplified models are available.
-Easy parallelization provided by stochastic methods and simplicity of implementation in comparison to the deterministic coupled cluster allows to consider relatively big systems including a greater numbers of basis state functions for the higher excitation levels.
-Further research might investigate different sampling schemes\cite{ScottStochasticcoupledcluster2017}, which were recently introduced. Analysis of the behavior of the statistical errors for these schemes and optimization techniques such as initiator approximation might be a very important topic for future works.
-Optimization of implementation both numerically and algorithmically is also an important question.
-The method seems to be a very promising, even though there is a lack of strict theory. 
-Our plan is to extend and generalize the code to apply it for the study of quantum dots, which is not been done yet.
+The CCQMC method is a relatively new. Even despite the fact that the
+main idea was presented in 2010, published research on this topic
+began to arrive only in 2017. Results published till the date of
+writing this thesis agree with other methods.  There is no strict
+theory about convergence, and there are only numerical evidences that
+a successfully implemented algorithm works for particular studied cases
+for single-reference systems. The sign problem exists for CCQMC
+method, however it is much more easily treated compared to the standard diffusion and Green's function Monte Carlo (DMC) approach,
+where the so-called fixed node approximation is used. There is a limited
+theoretical framework for the CCQMC sign problem, and only simplified
+models are available.  Easy parallelization provided by stochastic
+methods and simplicity of implementation in comparison to the
+deterministic coupled cluster method allows us to study relatively big
+systems including a greater numbers of basis state functions for the
+higher excitation levels.  Further research might investigate
+different sampling schemes\cite{ScottStochasticcoupledcluster2017},
+which were recently introduced. The analysis of the behavior of the
+statistical errors for these schemes and optimization techniques such
+as initiator approximation might be a very important topic for future
+works.  The optimization of the implementation both numerically and
+algorithmically is also an important question.  The method seems to be
+a very promising one, even though there is a lack of extensive studies.  Our
+plan is to extend and generalize the code to apply it to the study of
+quantum dots, which has not been done yet.
 
 
 \appendix
